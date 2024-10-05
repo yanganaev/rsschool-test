@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"  # Your region
+  region = "us-east-1" # Your region
 }
 
 resource "aws_iam_role" "github_actions_role" {
