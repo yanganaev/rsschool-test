@@ -2,7 +2,6 @@ name: Terraform
 
 on:
   pull_request:
-  push:
     branches:
       - task_1
 
