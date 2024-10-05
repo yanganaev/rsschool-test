@@ -32,9 +32,14 @@ resource "aws_iam_role" "github_actions_role" {
   })
 }
 
-# Attach Policies to the role
 resource "aws_iam_role_policy_attachment" "attach_policies" {
-  for_each   = toset(var.iam_policies)
   role       = aws_iam_role.terraform_gha_role.name
-  policy_arn = each.value
+
+  # Пример для привязки нескольких политик
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ec2_policy" {
+  role       = aws_iam_role.terraform_gha_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
