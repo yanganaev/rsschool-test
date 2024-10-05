@@ -1,24 +1,3 @@
-# resources.tf
-
-# S3 bucket for storing Terraform state
-resource "aws_s3_bucket" "terraform_state_s3_bucket" {
-  bucket        = var.terraform_state_s3_bucket_name
-  force_destroy = true
-
-  tags = {
-    Name        = var.terraform_state_s3_bucket_name
-    Environment = var.terraform_environment
-  }
-}
-
-# S3 bucket versioning enable
-resource "aws_s3_bucket_versioning" "terraform_state_s3_bucket" {
-  bucket = var.terraform_state_s3_bucket_name
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
 # IAM role used by GitHub Actions
 resource "aws_iam_role" "terraform_github_actions_role" {
   name               = var.terraform_github_actions_role_name
