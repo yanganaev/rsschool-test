@@ -25,9 +25,13 @@ resource "aws_iam_role" "github_actions_role" {
           StringEquals = {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
             "token.actions.githubusercontent.com:sub": "repo:yanganaev/rsschool-test:ref:refs/heads/task_1"
-    }
-  }
+          }
+        }
+      }
+    ]
+  })
 }
+
 
 # Create Role
 resource "aws_iam_role" "terraform_gha_role" {
