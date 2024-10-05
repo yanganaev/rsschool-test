@@ -1,5 +1,4 @@
 provider "aws" {
-  region     = var.aws_region
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
 }
@@ -14,11 +13,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket                   = "rsschool-devops-course-task1-tf-state-bucket"
-    key                      = "env/dev/terraform.tfstate"
-    region                   = "us-east-1"
-    encrypt                  = true
-    dynamodb_table           = "rsschool-devops-course-task1-terraform-lock"
+    bucket         = "yanganaev-terraform-state-s3-bucket"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "yanganaev-terraform-state-lock-table"
   }
 }
 
