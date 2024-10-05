@@ -1,19 +1,6 @@
 # Create IAM role for GitHub Actions2
-resource "aws_iam_role_policy" "allow_create_iam_role" {
-  role = aws_iam_role.github_actions_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "iam:CreateRole",
-          "iam:AttachRolePolicy",
-          "iam:PutRolePolicy"
-        ],
-        Resource = "arn:aws:iam::636256126634:role/GithubActionsRole"
-      }
+resource "aws_iam_role" "github_actions_role" {
+  name = "GithubActionsRole"
 
   # Update the assume role policy to allow GitHub OIDC provider
   assume_role_policy = jsonencode({
