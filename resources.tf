@@ -6,23 +6,25 @@ resource "aws_iam_openid_connect_provider" "gha_oidc" {
 }
 
 # Prepare OIDC policy
-data "aws_iam_policy_document" "oidc_policy" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
+data "aws_iam_openid_connect_provider" "existing_gha_oidc" {
+  url = "https://token.actions.githubusercontent.com"
+}
 
-    principals {
-      type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.gha_oidc.arn]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
-      values   = ["sts.amazonaws.com"] # Audience for AWS STS
-    }
-    condition {
-      test     = "StringLike"
-      variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:yanganaev/rsschool-test:*"] # Restrict source to course repo
+resource "aws_iam_role" "github_actions_role" {
+  name = "GithubActionsRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = data.aws_iam_openid_connect_provider.existing_gha_oidc.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+            "token.actions.githubusercontent.com:sub": "repo:yanganaev/rsschool-test:ref:refs/heads/task_1"
     }
   }
 }
