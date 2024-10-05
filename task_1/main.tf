@@ -19,7 +19,6 @@ terraform {
     region                   = "us-east-1"
     encrypt                  = true
     dynamodb_table           = "rsschool-devops-course-task1-terraform-lock"
-    shared_credentials_files = ["~/.aws/credentials"]
   }
 }
 
