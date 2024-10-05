@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket  = "aws-devops-terraform-backend"
+    bucket  = "aws-devops-terraform-s3-backend"
     key     = "terraform.tfstate"
     region  = "us-east-1"
     encrypt = "true"
