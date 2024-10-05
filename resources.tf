@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "oidc_policy" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:december-man/rsschool-devops-course-tasks:*"] # Restrict source to course repo
+      values   = ["repo:yanganaev/rsschool-test:*"] # Restrict source to course repo
     }
   }
 }
