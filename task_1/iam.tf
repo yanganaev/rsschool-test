@@ -1,4 +1,4 @@
-# Create IAM role for GitHub Actions
+# Create IAM role for GitHub Actions2
 resource "aws_iam_role" "github_actions_role" {
   name = "GithubActionsRole"
 
