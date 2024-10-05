@@ -8,7 +8,7 @@ terraform {
   backend "s3" {
     bucket  = "aws-devops-terraform-backend"
     key     = "terraform.tfstate"
-    region  = "eu-central-1"
+    region  = "us-central-1"
     encrypt = "true"
   }
 }
