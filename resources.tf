@@ -19,23 +19,6 @@ resource "aws_s3_bucket_versioning" "terraform_state_s3_bucket" {
   }
 }
 
-# DynamoDB table for storing Terraform locking state
-resource "aws_dynamodb_table" "terraform_state_lock_table" {
-  name         = var.terraform_state_lock_table_name
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  tags = {
-    Name        = var.terraform_state_lock_table_name
-    Environment = var.terraform_environment
-  }
-}
-
 # IAM role used by GitHub Actions
 resource "aws_iam_role" "terraform_github_actions_role" {
   name               = var.terraform_github_actions_role_name
@@ -74,29 +57,6 @@ resource "aws_iam_role_policy_attachment" "required_iam_policies" {
   for_each   = toset(var.required_iam_policies)
   role       = aws_iam_role.terraform_github_actions_role.name
   policy_arn = each.value
-}
-
-# Create the custom DynamoDB access policy to let Terraform access DynamoDB table for storing Terraform locking state
-resource "aws_iam_policy" "terraform_dynamodb_access_policy" {
-  name        = var.terraform_dynamodb_access_policy_name
-  description = var.terraform_dynamodb_access_policy_name_description
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = var.terraform_dynamodb_access_allowed_actions
-        Resource = "arn:aws:dynamodb:${var.aws_region}:${var.aws_account_id}:table/${var.terraform_state_lock_table_name}"
-      },
-    ]
-  })
-}
-
-# Attach the custom DynamoDB access policy to the IAM role
-resource "aws_iam_role_policy_attachment" "terraform_dynamodb_access" {
-  role       = aws_iam_role.terraform_github_actions_role.name
-  policy_arn = aws_iam_policy.terraform_dynamodb_access_policy.arn
 }
 
 # GitHub Actions OIDC Provider
