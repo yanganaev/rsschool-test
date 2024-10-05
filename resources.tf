@@ -32,12 +32,6 @@ resource "aws_iam_role" "github_actions_role" {
   })
 }
 
-# Create Role
-resource "aws_iam_role" "terraform_gha_role" {
-  name               = "terraform-github-actions-role"
-  assume_role_policy = data.aws_iam_policy_document.oidc_policy.json
-}
-
 # Attach Policies to the role
 resource "aws_iam_role_policy_attachment" "attach_policies" {
   for_each   = toset(var.iam_policies)
