@@ -32,7 +32,6 @@ resource "aws_iam_role" "github_actions_role" {
   })
 }
 
-
 # Create Role
 resource "aws_iam_role" "terraform_gha_role" {
   name               = var.gha_role
