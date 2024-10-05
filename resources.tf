@@ -39,3 +39,17 @@ resource "aws_iam_role_policy_attachment" "attach_policies" {
   role       = aws_iam_role.terraform_gha_role.name
   policy_arn = each.value
 }
+
+resource "aws_iam_role_policy" "allow_oidc_creation" {
+  name = "AllowOIDCCreation"
+  role = aws_iam_role.github_actions_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "iam:CreateOpenIDConnectProvider",
+        Resource = "*"
+      }
+}
